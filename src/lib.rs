@@ -41,7 +41,7 @@ fn haversine_vec(
     lats2: Vec<f64>,
     lngs2: Vec<f64>,
 ) -> PyResult<Vec<f64>> {
-    let mut res = Vec::new();
+    let mut res = vec![0_f64; lats1.len()];
     for (lat1, lng1, lat2, lng2) in izip!(&lats1, &lngs1, &lats2, &lngs2) {
         res.push(haversine_distance(*lat1, *lng1, *lat2, *lng2))
     }
