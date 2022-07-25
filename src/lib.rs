@@ -1,3 +1,4 @@
+use itertools::izip;
 use pyo3::prelude::*;
 
 /// Mean radius of Earth in meters
@@ -33,9 +34,24 @@ fn haversine(lat1: f64, lng1: f64, lat2: f64, lng2: f64) -> PyResult<f64> {
     Ok(haversine_distance(lat1, lng1, lat2, lng2))
 }
 
+#[pyfunction]
+fn haversine_vec(
+    lats1: Vec<f64>,
+    lngs1: Vec<f64>,
+    lats2: Vec<f64>,
+    lngs2: Vec<f64>,
+) -> PyResult<Vec<f64>> {
+    let mut res = Vec::new();
+    for (lat1, lng1, lat2, lng2) in izip!(&lats1, &lngs1, &lats2, &lngs2) {
+        res.push(haversine_distance(*lat1, *lng1, *lat2, *lng2))
+    }
+    Ok(res)
+}
+
 /// A Python module implemented in Rust.
 #[pymodule]
 fn fast_haversine(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(haversine, m)?)?;
+    m.add_function(wrap_pyfunction!(haversine_vec, m)?)?;
     Ok(())
 }
