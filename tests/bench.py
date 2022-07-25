@@ -14,10 +14,10 @@ def rand_lng() -> float:
 def create_data() -> tuple[list[float], list[float], list[float], list[float]]:
     random.seed(0)
     return (
-        [rand_lat() for _ in range(100)],
-        [rand_lng() for _ in range(100)],
-        [rand_lat() for _ in range(100)],
-        [rand_lng() for _ in range(100)],
+        [rand_lat() for _ in range(10_000)],
+        [rand_lng() for _ in range(10_000)],
+        [rand_lat() for _ in range(10_000)],
+        [rand_lng() for _ in range(10_000)],
     )
 
 
