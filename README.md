@@ -6,7 +6,7 @@ An implementation of Haversine distance calculations using Rust and PyO3
 
 - [ ] Makefile
 - [ ] More performance testing (i.e. in Rust)
-- [ ] Fix the CI pipeline
+- [ ] Fix the CI pipeline ([example](https://github.com/charliermarsh/ruff/blob/main/.github/workflows/ci.yaml))
 - [ ] Better docs and README
 - [ ] Add a [`.pyi` file](https://pyo3.rs/v0.16.4/python_typing_hints.html)
 - [ ] Better packaging using Maturin natively (i.e. no setup.py)
