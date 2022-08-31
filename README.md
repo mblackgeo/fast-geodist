@@ -2,7 +2,7 @@
 
 An implementation of the [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) for calculating [Great Circle distance](https://en.wikipedia.org/wiki/Great-circle_distance) using Rust and [PyO3](https://github.com/PyO3/PyO3).
 
-This package was started as an experiement for learning how implement functions in Rust and wrap them for use in python. The Haversine Formula is implemented following [georust](https://github.com/georust/geo/blob/main/geo/src/algorithm/haversine_distance.rs), with an array-wise implementation written using [`ndarray::parallel`](https://docs.rs/ndarray/latest/ndarray/parallel/index.html). It is wrapped for python using [`setuptools-rust`](https://github.com/PyO3/setuptools-rust) and integrates [`rust-numpy`](https://github.com/PyO3/rust-numpy) for array operations.
+This package was started as an experiement for learning how to implement functions in Rust and wrap them for use in python. The Haversine Formula is implemented following [georust](https://github.com/georust/geo/blob/main/geo/src/algorithm/haversine_distance.rs), with an array-wise implementation written using [`ndarray::parallel`](https://docs.rs/ndarray/latest/ndarray/parallel/index.html). It is wrapped for python using [`setuptools-rust`](https://github.com/PyO3/setuptools-rust) and integrates [`rust-numpy`](https://github.com/PyO3/rust-numpy) for array operations.
 
 ## Installation
 
@@ -20,7 +20,7 @@ from fast_haversine import haversine
 result = haversine((1, 1, 0, 0))
 
 # or a numpy array of coordinates pairs
-# useful if loads of distances need to be calculated, handled in parallel
+# useful if lots of distances need to be calculated, handled in parallel
 result = haversine(np.array([(1,1,0,0), (2,2,0,0)]))
 ```
 
