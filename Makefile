@@ -5,6 +5,8 @@ help:
 
 .PHONY: install
 install:  ## Install dev requirements into the current python environment
+	pre-commit install
+	pre-commit install --hook-type commit-msg
 	pip install -r requirements-dev.txt
 
 .PHONY: build-dev
@@ -18,6 +20,7 @@ build:  ## Build the optimised release binaries
 .PHONY: lint
 lint:  ## Run linting checks with cargo, flake8, isort, and black
 	cargo fmt --check
+	cargo clippy -- -D warnings
 	flake8 .
 	black --check .
 	isort -c .
