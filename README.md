@@ -50,7 +50,7 @@ Tooling:
 * Cargo and [Pytest](https://docs.pytest.org/en/6.2.x/) are used for testing the Rust and Python code respectively (see [`/tests`](/tests/)).
 * Python code is linted using [flake8](https://flake8.pycqa.org/en/latest/) and formatted using [Black](https://github.com/psf/black); rust code with `cargo fmt` and `cargo clippy`.
 * [pre-commit](https://pre-commit.com/) is used to run these checks locally before files are pushed to git
-* The [Github Actions pipeline](.github/workflows/cicd.yml) runs these checks and tests
+* The [Github Actions pipeline](.github/workflows/ci.yml) runs these checks and tests
 * (Soon) [Semantic-release](https://python-semantic-release.readthedocs.io/en/latest/) is used with [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) for automated releasing to PyPI
 
 ## Roadmap
