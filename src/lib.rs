@@ -1,5 +1,6 @@
 use ndarray::parallel::prelude::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
-use ndarray::{Array1, Array2, Axis};
+use ndarray::{Array1, ArrayView2, Axis};
+use numpy::{IntoPyArray, PyArray1, PyReadonlyArrayDyn};
 
 // use numpy::{IntoPyArray, PyArray1, PyArray2, PyArrayDyn, PyReadonlyArrayDyn};
 use pyo3::prelude::{pyfunction, pymodule, wrap_pyfunction, PyModule, PyResult, Python};
@@ -31,7 +32,7 @@ pub fn haversine_distance(lat1: f64, lng1: f64, lat2: f64, lng2: f64) -> f64 {
     MEAN_EARTH_RADIUS * c
 }
 
-pub fn haversine_distance_array(x: &Array2<f64>) -> Array1<f64> {
+pub fn haversine_distance_array(x: &ArrayView2<f64>) -> Array1<f64> {
     let mut distances = Vec::new();
     x.axis_iter(Axis(0))
         .into_par_iter()
@@ -41,15 +42,29 @@ pub fn haversine_distance_array(x: &Array2<f64>) -> Array1<f64> {
     Array1::from(distances)
 }
 
-/// Python wrapper
+/// Python wrappers
 #[pyfunction]
 fn haversine(lat1: f64, lng1: f64, lat2: f64, lng2: f64) -> PyResult<f64> {
     Ok(haversine_distance(lat1, lng1, lat2, lng2))
 }
 
-/// A Python module implemented in Rust.
+#[pyfunction]
+fn haversine_array<'py>(py: Python<'py>, x: PyReadonlyArrayDyn<f64>) -> &'py PyArray1<f64> {
+    let array = x.as_array();
+
+    // reshape to ensure 2D
+    let shape = (array.len_of(Axis(0)), array.len_of(Axis(1)));
+    let array2d = array.into_shape(shape).unwrap();
+    // TODO raise an exception here if dim 2 is not exactly 4
+
+    let result_array = haversine_distance_array(&array2d);
+    result_array.into_pyarray(py)
+}
+
+/// Python module
 #[pymodule]
 fn fast_haversine(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(haversine, m)?)?;
+    m.add_function(wrap_pyfunction!(haversine_array, m)?)?;
     Ok(())
 }

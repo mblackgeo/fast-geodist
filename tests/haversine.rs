@@ -20,7 +20,7 @@ fn test_haversine_2() {
 fn test_haversine_array() {
     let arr = array![[42.3521, -72.1235, 70.612, 72.1260], [0.0, 0.0, 1.0, 0.0]];
 
-    let res = haversine_distance_array(&arr);
+    let res = haversine_distance_array(&arr.view());
     let expect = [7130580.307935911, 111195.0802335329];
 
     assert_relative_eq!(res[0], expect[0], epsilon = 1.0e-6);
