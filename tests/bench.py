@@ -2,7 +2,8 @@ import random
 
 import numpy as np
 
-from fast_haversine import haversine_array, slow_haversine
+from fast_haversine import haversine_array
+from fast_haversine.slow import slow_haversine
 
 
 def rand_lat() -> float:
@@ -16,7 +17,7 @@ def rand_lng() -> float:
 def create_data() -> np.ndarray:
     random.seed(0)
     return np.array(
-        [(rand_lat(), rand_lng(), rand_lat(), rand_lng()) for _ in range(500_000)],
+        [(rand_lat(), rand_lng(), rand_lat(), rand_lng()) for _ in range(250_000)],
     )
 
 
