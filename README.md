@@ -16,15 +16,30 @@ The package provides two main entry points:
 import numpy as np
 from fast_haversine import haversine
 
-# input either a tuple of lat/lon pairs
+# input either a tuple of (lat/lon, lat/lon)
 result = haversine((1, 1, 0, 0))
 
 # or a numpy array of coordinates pairs
-# useful if lots of distances need to be calculated, handled in parallel
+# useful if lots of distances need to be calculated
+# will be computed in parallel
 result = haversine(np.array([(1,1,0,0), (2,2,0,0)]))
 ```
 
-## Developement
+## Benchmarks
+
+The results of benchmarking show the rust implementation is **2.5x to 2.7x faster** than the python implementation. This benchmark computes distances on an array containing 250,000 pairs on coordinates (see [`bench.py`](/tests/bench.py)):
+
+```
+--------------------------------------------------- benchmark: 2 tests --------------------------------------------------
+Name (time in ms)            Min                 Max                Mean             StdDev              Median
+-------------------------------------------------------------------------------------------------------------------------
+test_benchmark_fast     260.0692 (1.0)      265.6916 (1.0)      262.6179 (1.0)       2.0324 (1.0)      262.5162 (1.0)
+test_benchmark_slow     655.8816 (2.52)     845.2172 (3.18)     709.3914 (2.70)     80.1352 (39.43)    667.0456 (2.54)
+-------------------------------------------------------------------------------------------------------------------------
+```
+Computed on an Intel i7-1165G7.
+
+## Development
 
 Prequisites:
 
