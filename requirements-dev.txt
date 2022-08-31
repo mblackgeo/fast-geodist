@@ -1,4 +1,6 @@
 black==22.6.0
-pytest==7.1.2
+flake8==5.0.4
+isort==5.10.1
 pytest-benchmark==3.4.1
+pytest==7.1.2
 setuptools_rust==1.4.1
