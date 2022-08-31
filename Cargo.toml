@@ -9,8 +9,10 @@ name = "fast_haversine"
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
-pyo3 = { version = "0.16.5", features = ["extension-module"] }
+pyo3 = { version = "0.17.1", features = ["extension-module"] }
 itertools = "0.10.3"
+ndarray = { version = "0.15.3", features = ["rayon"] }
+numpy = "0.17.1"
 
 [dev-dependencies]
 approx = "0.5.1"
