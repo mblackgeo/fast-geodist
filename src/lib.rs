@@ -1,5 +1,8 @@
-use itertools::izip;
-use pyo3::prelude::*;
+use ndarray::parallel::prelude::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
+use ndarray::{Array1, Array2, Axis};
+
+// use numpy::{IntoPyArray, PyArray1, PyArray2, PyArrayDyn, PyReadonlyArrayDyn};
+use pyo3::prelude::{pyfunction, pymodule, wrap_pyfunction, PyModule, PyResult, Python};
 
 /// Mean radius of Earth in meters
 /// This is the value recommended by the IUGG:
@@ -28,30 +31,25 @@ pub fn haversine_distance(lat1: f64, lng1: f64, lat2: f64, lng2: f64) -> f64 {
     MEAN_EARTH_RADIUS * c
 }
 
+pub fn haversine_distance_array(x: &Array2<f64>) -> Array1<f64> {
+    let mut distances = Vec::new();
+    x.axis_iter(Axis(0))
+        .into_par_iter()
+        .map(|row| haversine_distance(row[0], row[1], row[2], row[3]))
+        .collect_into_vec(&mut distances);
+
+    Array1::from(distances)
+}
+
 /// Python wrapper
 #[pyfunction]
 fn haversine(lat1: f64, lng1: f64, lat2: f64, lng2: f64) -> PyResult<f64> {
     Ok(haversine_distance(lat1, lng1, lat2, lng2))
 }
 
-#[pyfunction]
-fn haversine_vec(
-    lats1: Vec<f64>,
-    lngs1: Vec<f64>,
-    lats2: Vec<f64>,
-    lngs2: Vec<f64>,
-) -> PyResult<Vec<f64>> {
-    let mut res = Vec::new();
-    for (lat1, lng1, lat2, lng2) in izip!(&lats1, &lngs1, &lats2, &lngs2) {
-        res.push(haversine_distance(*lat1, *lng1, *lat2, *lng2))
-    }
-    Ok(res)
-}
-
 /// A Python module implemented in Rust.
 #[pymodule]
 fn fast_haversine(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(haversine, m)?)?;
-    m.add_function(wrap_pyfunction!(haversine_vec, m)?)?;
     Ok(())
 }
