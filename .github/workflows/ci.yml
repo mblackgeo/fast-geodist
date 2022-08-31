@@ -1,62 +1,29 @@
-name: CI
+name: ci
 
-on:
-  push:
-  pull_request:
+on: [push]
 
 jobs:
-  cargo_build:
-    name: "cargo build"
+  ci:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: cargo build --release
 
-  cargo_fmt:
-    name: "cargo fmt"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      # TODO matrix of python versions
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v4
         with:
-          toolchain: stable
-      - run: cargo fmt --check
+          python-version: 3.7
 
-  cargo_clippy:
-    name: "cargo clippy"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-      - run: cargo clippy -- -D warnings
+      - name: Install
+        run: make install
 
-  cargo_test:
-    name: "cargo test"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-      - run: cargo test
+      - name: Lint
+        run: make lint
 
-  python_test:
-    name: "python build and test"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.7"
-      - run: make install
-      - run: maturin build -b bin
-
-    # TODO pytest
+      - name: Test
+        run: make test
