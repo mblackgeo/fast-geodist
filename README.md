@@ -29,7 +29,6 @@ Prequisites:
 
 * Python (>=3.7) and make
 * [Rust toolchain](https://rustup.rs/)
-* [pre-commit](https://pre-commit.com/)
 
 After cloning the repository, the Makefile includes helpful commands for setting up a development environment, linting, formatting, testing, and benchmarking. Get started as follows:
 
