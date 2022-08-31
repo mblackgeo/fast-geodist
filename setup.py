@@ -8,6 +8,7 @@ setup(
         RustExtension("fast_haversine.fast_haversine", binding=Binding.PyO3)
     ],
     packages=["fast_haversine"],
+    install_requires=["numpy"],
     # rust extensions are not zip safe, just like C-extensions.
     zip_safe=False,
 )
