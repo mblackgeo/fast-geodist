@@ -1,5 +1,6 @@
-from fast_haversine import haversine, haversine_vec, slow_haversine
 from pytest import approx
+
+from fast_haversine import haversine, haversine_vec, slow_haversine
 
 
 def test_fast_haversine():

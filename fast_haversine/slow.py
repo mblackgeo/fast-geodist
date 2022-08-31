@@ -2,7 +2,7 @@ import math
 
 
 def slow_haversine(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
-    # From https://community.esri.com/t5/coordinate-reference-systems-blog/distance-on-a-sphere-the-haversine-formula/ba-p/902128
+    # From https://bit.ly/3wKKYo1
     R = 6371008.8  # radius of Earth in meters
     phi_1 = math.radians(lat1)
     phi_2 = math.radians(lat2)
