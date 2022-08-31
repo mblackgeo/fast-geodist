@@ -6,9 +6,14 @@ help:
 .PHONY: install
 install:  ## Install dev requirements into the current python environment
 	pip install -r requirements-dev.txt
-	pip install -e .
 
-# TODO build
+.PHONY: build-dev
+build-dev:  ## Build the development (debug candidate)
+	python setup.py develop
+
+.PHONY: build
+build:  ## Build the optimised release binaries
+	python setup.py install
 
 .PHONY: lint
 lint:  ## Run linting checks with cargo, flake8, isort, and black
@@ -18,10 +23,10 @@ lint:  ## Run linting checks with cargo, flake8, isort, and black
 	isort -c .
 
 .PHONY: test
-test:  ## Run the test suite using cargo and pytest
+test: build  ## Run the test suite using cargo and pytest
 	cargo test
 	pytest tests
 
 .PHONY: bench
-bench:  ## Run the Rust and Python benchmarks
+bench: build ## Run the Rust and Python benchmarks
 	pytest tests/bench.py
