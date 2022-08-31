@@ -5,9 +5,9 @@ help:
 
 .PHONY: install
 install:  ## Install dev requirements into the current python environment
+	pip install -r requirements-dev.txt
 	pre-commit install
 	pre-commit install --hook-type commit-msg
-	pip install -r requirements-dev.txt
 
 .PHONY: build-dev
 build-dev:  ## Build the development (debug candidate)

@@ -2,6 +2,7 @@ black==22.6.0
 flake8==5.0.4
 isort==5.10.1
 numpy==1.21.6
+pre-commit~=2.0
 pytest-benchmark==3.4.1
 pytest==7.1.2
 setuptools_rust==1.4.1
