@@ -1,7 +1,8 @@
 import random
-from typing import List, Tuple
 
-from fast_haversine import haversine_vec, slow_haversine
+import numpy as np
+
+from fast_haversine import haversine_array, slow_haversine
 
 
 def rand_lat() -> float:
@@ -12,23 +13,20 @@ def rand_lng() -> float:
     return random.uniform(-180.0, 180.0)
 
 
-def create_data() -> Tuple[List[float], List[float], List[float], List[float]]:
+def create_data() -> np.ndarray:
     random.seed(0)
-    return (
-        [rand_lat() for _ in range(100_000)],
-        [rand_lng() for _ in range(100_000)],
-        [rand_lat() for _ in range(100_000)],
-        [rand_lng() for _ in range(100_000)],
+    return np.array(
+        [(rand_lat(), rand_lng(), rand_lat(), rand_lng()) for _ in range(500_000)],
     )
 
 
 def bench_helper(fast: bool = False):
     data = create_data()
     if fast:
-        haversine_vec(*data)
+        haversine_array(data)
     else:
-        for (a, b, c, d) in zip(*data):
-            slow_haversine(a, b, c, d)
+        for row in data:
+            slow_haversine(*row)
 
 
 def test_benchmark_fast(benchmark):
