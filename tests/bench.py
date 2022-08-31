@@ -1,4 +1,5 @@
 import random
+from typing import List, Tuple
 
 from fast_haversine import haversine_vec, slow_haversine
 
@@ -11,7 +12,7 @@ def rand_lng() -> float:
     return random.uniform(-180.0, 180.0)
 
 
-def create_data() -> tuple[list[float], list[float], list[float], list[float]]:
+def create_data() -> Tuple[List[float], List[float], List[float], List[float]]:
     random.seed(0)
     return (
         [rand_lat() for _ in range(10_000)],
