@@ -32,13 +32,11 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Create virtual environment
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
-
-      - name: Install
+      - name: Install dependencies
         run: make install
+
+      - name: Build and install python package
+        run: pip install .
 
       - name: Lint
         run: make lint
