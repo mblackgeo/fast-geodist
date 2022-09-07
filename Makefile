@@ -10,12 +10,12 @@ install:  ## Install dev requirements into the current python environment
 	pre-commit install --hook-type commit-msg
 
 .PHONY: build-dev
-build-dev:  ## Build the development (debug candidate)
-	python setup.py develop
+build-dev:  ## Build the package in debug and install it into the virtualenv
+	maturin develop
 
 .PHONY: build
 build:  ## Build the optimised release binaries
-	python setup.py install
+	maturin build -r
 
 .PHONY: lint
 lint:  ## Run linting checks with cargo, flake8, isort, and black
@@ -32,4 +32,4 @@ test: build  ## Run the test suite using cargo and pytest
 
 .PHONY: bench
 bench: build ## Run the Rust and Python benchmarks
-	pytest tests/bench.py --benchmark-columns="min, max, mean, stddev, median"
+	pytest tests/bench.py --benchmark-columns="min, max, mean, median"

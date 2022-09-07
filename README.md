@@ -71,7 +71,7 @@ Tooling:
 ## Roadmap
 
 - [ ] Rust benchmarks
-- [ ] Packaging using [Maturin](https://github.com/PyO3/maturin)
+- [x] Packaging using [Maturin](https://github.com/PyO3/maturin)
 - [ ] CD pipeline with semantic release integration
 
 ## References

@@ -32,8 +32,11 @@ jobs:
             ${{ runner.os }}-build-
             ${{ runner.os }}-
 
-      - name: Install
+      - name: Install dependencies
         run: make install
+
+      - name: Build and install python package
+        run: pip install .
 
       - name: Lint
         run: make lint
