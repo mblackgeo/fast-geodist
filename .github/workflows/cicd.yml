@@ -136,7 +136,7 @@ jobs:
   # ***************************************************************************
   release:
     needs: [build-macos, build-windows, build-linux]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     name: release
     runs-on: ubuntu-latest
