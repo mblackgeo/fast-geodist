@@ -79,7 +79,6 @@ jobs:
   # Build wheels on Win/Mac/Linux (only on push to main branch)
   # ***************************************************************************
   build-linux:
-    needs: semantic-release
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ startsWith('refs/tags/v', github.ref) }}
 
     runs-on: ubuntu-latest
@@ -97,7 +96,6 @@ jobs:
           path: dist
 
   build-windows:
-    needs: semantic-release
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ startsWith('refs/tags/v', github.ref) }}
 
     runs-on: windows-latest
@@ -114,7 +112,6 @@ jobs:
           path: dist
 
   build-macos:
-    needs: semantic-release
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ startsWith('refs/tags/v', github.ref) }}
 
     runs-on: macos-latest
