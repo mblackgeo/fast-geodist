@@ -155,6 +155,7 @@ jobs:
         run: python -c "import fast_haversine; print(fast_haversine.__version__)"
 
       - name: Publish to PyPI
+        if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
         uses: messense/maturin-action@v1
         env:
           MATURIN_USERNAME: __token__
