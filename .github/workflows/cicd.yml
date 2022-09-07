@@ -3,6 +3,9 @@ name: cicd
 on: [push]
 
 jobs:
+  # ***************************************************************************
+  # Run linters and tests (all branches)
+  # ***************************************************************************
   ci:
     runs-on: ubuntu-latest
 
@@ -45,11 +48,41 @@ jobs:
         run: make test
 
   # ***************************************************************************
+  # Perform a semantic release (only on push to main branch)
+  # ***************************************************************************
+  semantic-release:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    outputs:
+      semrel: ${{ steps.semrel.outputs.semrel }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+
+      - name: Install dependencies
+        run: pip install python-semantic-release==7.31.4
+
+      - name: Semantic Release
+        id: semrel
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "action@github.com"
+          mkdir semrel
+          semantic-release publish -D commit_author='github-actions <action@github.com>' 2> out.txt
+          echo "::set-output name=semrel::$(cat out.txt)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ***************************************************************************
   # Build wheels on Win/Mac/Linux (only on push to main branch)
   # ***************************************************************************
   build-linux:
-    needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: semantic-release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
 
     runs-on: ubuntu-latest
     steps:
@@ -66,8 +99,8 @@ jobs:
           path: dist
 
   build-windows:
-    needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: semantic-release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
 
     runs-on: windows-latest
     steps:
@@ -83,8 +116,8 @@ jobs:
           path: dist
 
   build-macos:
-    needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: semantic-release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
 
     runs-on: macos-latest
     steps:
@@ -103,7 +136,7 @@ jobs:
   # Release package to Test and then actual PyPI (only on push to main branch)
   # ***************************************************************************
   release:
-    needs: [ci, build-macos, build-windows, build-linux]
+    needs: [build-macos, build-windows, build-linux]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     name: release
@@ -113,24 +146,6 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: wheels
-
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v4
-        with:
-          python-version: 3.7
-
-      - name: Install dependencies
-        run: pip install python-semantic-release==7.31.4
-
-      - name: Semantic Release
-        id: release
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "action@github.com"
-          semantic-release publish -D commit_author='github-actions <action@github.com>' 2> out.txt
-          echo "::set-output name=semrel::$(cat out.txt)"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to Test PyPI
         uses: messense/maturin-action@v1
@@ -143,7 +158,6 @@ jobs:
           args: --skip-existing *
 
       - name: Test install from Test PyPI
-        if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
         run: |
           pip install \
           --index-url https://test.pypi.org/simple/ \
@@ -151,11 +165,9 @@ jobs:
           fast-haversine
 
       - name: Verify package after install from Test PyPI
-        if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
         run: python -c "import fast_haversine; print(fast_haversine.__version__)"
 
       - name: Publish to PyPI
-        if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
         uses: messense/maturin-action@v1
         env:
           MATURIN_USERNAME: __token__

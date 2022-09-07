@@ -61,7 +61,7 @@ known_first_party = ["fast_haversine"]
 
 [tool.semantic_release]
 version_variable = ["python/fast_haversine/__init__.py:__version__"]
-version_toml = ["pyproject.toml:project.version"]
+version_toml = ["pyproject.toml:project.version", "Cargo.toml:package.version"]
 build_command = ""
 major_on_zero = true
 branch = "main"
