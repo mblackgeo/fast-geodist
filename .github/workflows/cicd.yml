@@ -132,15 +132,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and publish to Test PyPI
-        uses: JRubics/poetry-publish@v1.10
-        if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
-        with:
-          pypi_token: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository_name: "testpypi"
-          repository_url: "https://test.pypi.org/legacy/"
+      - name: Publish to Test PyPI
+        uses: messense/maturin-action@v1
         env:
-          SEM_RELEASE_STATUS: ${{ join(steps.release.outputs.*) }}
+          MATURIN_USERNAME: __token__
+          MATURIN_PYPI_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          MATURIN_REPOSITORY_URL: https://test.pypi.org/legacy/
+        with:
+          command: upload
+          args: --skip-existing *
 
       - name: Test install from Test PyPI
         if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
@@ -154,15 +154,10 @@ jobs:
         if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
         run: python -c "import fast_haversine; print(fast_haversine.__version__)"
 
-      - name: Build and publish to PyPI
-        if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
-        uses: JRubics/poetry-publish@v1.10
-        with:
-          pypi_token: ${{ secrets.PYPI_API_TOKEN }}
-
       - name: Publish to PyPI
         uses: messense/maturin-action@v1
         env:
+          MATURIN_USERNAME: __token__
           MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         with:
           command: upload
