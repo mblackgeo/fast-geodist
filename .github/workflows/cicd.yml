@@ -1,6 +1,7 @@
 name: cicd
 
 on: [push]
+
 env:
   PYTHON_VERSION: "3.7"
 
@@ -123,7 +124,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(needs.semrel.outputs.semrel), 'No release will be made')
     needs: semantic-release
 
-   runs-on: windows-latest
+    runs-on: windows-latest
     strategy:
       matrix:
         target: [x64, x86]
