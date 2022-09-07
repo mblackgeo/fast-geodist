@@ -52,7 +52,7 @@ jobs:
   # ***************************************************************************
   semantic-release:
     needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     outputs:
       semrel: ${{ steps.semrel.outputs.semrel }}
 
