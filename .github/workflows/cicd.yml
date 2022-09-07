@@ -4,6 +4,7 @@ on: [push]
 
 env:
   PYTHON_VERSION: "3.7"
+  PACKAGE_NAME: "fast_haversine"
 
 jobs:
   # ***************************************************************************
