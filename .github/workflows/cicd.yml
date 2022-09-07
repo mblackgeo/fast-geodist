@@ -52,7 +52,9 @@ jobs:
   # ***************************************************************************
   semantic-release:
     needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
+    outputs:
+      semrel: ${{ steps.semrel.outputs.semrel }}
 
     runs-on: ubuntu-latest
       - name: Set up Python 3.7
@@ -64,24 +66,22 @@ jobs:
         run: pip install python-semantic-release==7.31.4
 
       - name: Semantic Release
-        id: Run sematic release
+        id: semrel
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "action@github.com"
           mkdir semrel
           semantic-release publish -D commit_author='github-actions <action@github.com>' 2> out.txt
+          echo "::set-output name=semrel::$(cat out.txt)"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check if a release will be made
-        run: grep -q "No release will be made" out.txt
 
   # ***************************************************************************
   # Build wheels on Win/Mac/Linux (only on push to main branch)
   # ***************************************************************************
   build-linux:
     needs: semantic-release
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
 
     runs-on: ubuntu-latest
     steps:
@@ -99,7 +99,7 @@ jobs:
 
   build-windows:
     needs: semantic-release
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
 
     runs-on: windows-latest
     steps:
@@ -116,7 +116,7 @@ jobs:
 
   build-macos:
     needs: semantic-release
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
 
     runs-on: macos-latest
     steps:
@@ -136,7 +136,7 @@ jobs:
   # ***************************************************************************
   release:
     needs: [build-macos, build-windows, build-linux]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
 
     name: release
     runs-on: ubuntu-latest
