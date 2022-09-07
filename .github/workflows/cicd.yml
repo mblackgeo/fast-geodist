@@ -71,7 +71,6 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "action@github.com"
-          mkdir semrel
           semantic-release publish -D commit_author='github-actions <action@github.com>' 2> out.txt
           echo "::set-output name=semrel::$(cat out.txt)"
         env:
