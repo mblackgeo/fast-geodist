@@ -8,6 +8,7 @@ install:  ## Install dev requirements into the current python environment
 	pip install -r requirements-dev.txt
 	pre-commit install
 	pre-commit install --hook-type commit-msg
+	maturin develop
 
 .PHONY: build-dev
 build-dev:  ## Build the package in debug and install it into the virtualenv

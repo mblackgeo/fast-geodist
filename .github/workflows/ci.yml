@@ -35,9 +35,6 @@ jobs:
       - name: Install
         run: make install
 
-      - name: Build
-        run: make build
-
       - name: Lint
         run: make lint
 
