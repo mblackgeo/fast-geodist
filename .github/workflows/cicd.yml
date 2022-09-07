@@ -1,0 +1,165 @@
+name: cicd
+
+on: [push]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      # TODO matrix of python versions
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+
+      - uses: actions/cache@v3
+        env:
+          cache-name: cache-cargo
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: Install dependencies
+        run: make install
+
+      - name: Build and install python package
+        run: pip install .
+
+      - name: Lint
+        run: make lint
+
+      - name: Test
+        run: make test
+
+  # ***************************************************************************
+  # Build wheels on Win/Mac/Linux (only on push to main branch)
+  # ***************************************************************************
+  build-linux:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: messense/maturin-action@v1
+        with:
+          manylinux: auto
+          command: build
+          args: --release --sdist -o dist --find-interpreter
+      - name: Upload wheels
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheels
+          path: dist
+
+  build-windows:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: messense/maturin-action@v1
+        with:
+          command: build
+          args: --release -o dist --find-interpreter
+      - name: Upload wheels
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheels
+          path: dist
+
+  build-macos:
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: messense/maturin-action@v1
+        with:
+          command: build
+          args: --release -o dist --universal2 --find-interpreter
+      - name: Upload wheels
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheels
+          path: dist
+
+  # ***************************************************************************
+  # Release package to Test and then actual PyPI (only on push to main branch)
+  # ***************************************************************************
+  release:
+    needs: [ci, build-macos, build-windows, build-linux]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    name: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: wheels
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+
+      - name: Install dependencies
+        run: pip install python-semantic-release==7.31.4
+
+      - name: Semantic Release
+        id: release
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "action@github.com"
+          semantic-release publish -D commit_author='github-actions <action@github.com>' 2> out.txt
+          echo "::set-output name=semrel::$(cat out.txt)"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Test PyPI
+        uses: messense/maturin-action@v1
+        env:
+          MATURIN_USERNAME: __token__
+          MATURIN_PYPI_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          MATURIN_REPOSITORY_URL: https://test.pypi.org/legacy/
+        with:
+          command: upload
+          args: --skip-existing *
+
+      - name: Test install from Test PyPI
+        if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
+        run: |
+          pip install \
+          --index-url https://test.pypi.org/simple/ \
+          --extra-index-url https://pypi.org/simple \
+          fast-haversine
+
+      - name: Verify package after install from Test PyPI
+        if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
+        run: python -c "import fast_haversine; print(fast_haversine.__version__)"
+
+      - name: Publish to PyPI
+        if: ${{ !contains(join(steps.release.outputs.*), 'No release will be made') }}
+        uses: messense/maturin-action@v1
+        env:
+          MATURIN_USERNAME: __token__
+          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        with:
+          command: upload
+          args: --skip-existing *

@@ -6,6 +6,7 @@ from .fast_haversine import haversine as _haversine
 from .fast_haversine import haversine_array
 
 __all__ = ["haversine"]
+__version__ = "0.0.0"
 
 
 def haversine(input: Union[np.ndarray, Tuple[float, ...]]) -> Union[np.ndarray, float]:
