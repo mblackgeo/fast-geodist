@@ -71,13 +71,12 @@ jobs:
         run: pip install python-semantic-release==7.31.4
 
       - name: Semantic Release
-        id: semrel
         run: |
           git config --global user.name "mblackgeo"
           git config --global user.email "18327836+mblackgeo@users.noreply.github.com"
           semantic-release publish -D commit_author='mblackgeo <18327836+mblackgeo@users.noreply.github.com>'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GIT_TOKEN }}
 
   # ***************************************************************************
   # Build wheels on Win/Mac/Linux (only on push to main branch)
