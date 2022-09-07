@@ -71,20 +71,16 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "action@github.com"
-          semantic-release publish -D commit_author='github-actions <action@github.com>' 2> out.txt
-          echo "::set-output name=semrel::$(cat out.txt)"
+          semantic-release publish -D commit_author='github-actions <action@github.com>'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Echo semantic release output
-        run: echo ${{ steps.semrel.outputs.semrel }}
 
   # ***************************************************************************
   # Build wheels on Win/Mac/Linux (only on push to main branch)
   # ***************************************************************************
   build-linux:
     needs: semantic-release
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ startsWith('refs/tags/v', github.ref) }}
 
     runs-on: ubuntu-latest
     steps:
@@ -102,7 +98,7 @@ jobs:
 
   build-windows:
     needs: semantic-release
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ startsWith('refs/tags/v', github.ref) }}
 
     runs-on: windows-latest
     steps:
@@ -119,7 +115,7 @@ jobs:
 
   build-macos:
     needs: semantic-release
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ !contains(join(needs.semantic-release.outputs.semrel), 'No release will be made') }}
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ startsWith('refs/tags/v', github.ref) }}
 
     runs-on: macos-latest
     steps:
@@ -139,7 +135,7 @@ jobs:
   # ***************************************************************************
   release:
     needs: [build-macos, build-windows, build-linux]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && ${{ startsWith('refs/tags/v', github.ref) }}
 
     name: release
     runs-on: ubuntu-latest
