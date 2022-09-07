@@ -1,8 +1,6 @@
 use ndarray::parallel::prelude::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 use ndarray::{Array1, ArrayView2, Axis};
 use numpy::{IntoPyArray, PyArray1, PyReadonlyArrayDyn};
-
-// use numpy::{IntoPyArray, PyArray1, PyArray2, PyArrayDyn, PyReadonlyArrayDyn};
 use pyo3::prelude::{pyfunction, pymodule, wrap_pyfunction, PyModule, PyResult, Python};
 
 /// Mean radius of Earth in meters
