@@ -39,7 +39,6 @@ def test_with_nparray():
     assert res[1] == pytest.approx(expect[1])
 
 
-@pytest.mark.skip
 def test_slow_haversine():
     res = slow_haversine(42.3521, -72.1235, 70.612, 72.1260)
     expect = 7130580.307935911
