@@ -1,99 +1,20 @@
-name: cicd
+name: release
 
-on: [push]
+on:
+  push:
+    branches:
+      - "main"
+    tags:
+      - v*
 
 env:
   PYTHON_VERSION: "3.7"
   PACKAGE_NAME: "fast_haversine"
 
-jobs:
-  # ***************************************************************************
-  # Run linters and tests (all branches)
-  # ***************************************************************************
-  ci:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-
-      # TODO matrix of python versions
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - uses: actions/cache@v3
-        env:
-          cache-name: cache-cargo
-        with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-
-      - name: Install dependencies
-        run: make install
-
-      - name: Build and install python package
-        run: pip install .
-
-      - name: Lint
-        run: make lint
-
-      - name: Test
-        run: make test
-
-  # ***************************************************************************
-  # Perform a semantic release (only on push to main branch)
-  # ***************************************************************************
-  semantic-release:
-    needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    outputs:
-      semrel: ${{ steps.semrel.outputs.semrel }}
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GIT_TOKEN }}
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        run: pip install python-semantic-release==7.31.4
-
-      - name: Semantic Release
-        id: semrel
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "action@github.com"
-          semantic-release publish -D commit_author='github-actions <action@github.com>' 2> out.txt
-          echo "::set-output name=semrel::$(cat out.txt)"
-        env:
-          GH_TOKEN: ${{ secrets.GIT_TOKEN }}
-
-      - name: Show Semantic Release output
-        run: echo ${{ steps.semrel.outputs.semrel }}
-
-  # ***************************************************************************
+  # **************************************************************************
   # Build wheels on Win/Mac/Linux (only on push to main branch)
   # ***************************************************************************
   build-linux:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v')
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -124,8 +45,6 @@ jobs:
           path: dist
 
   build-windows:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v')
-
     runs-on: windows-latest
     strategy:
       matrix:
@@ -161,8 +80,6 @@ jobs:
           path: dist
 
   build-macos:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v')
-
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
@@ -205,10 +122,8 @@ jobs:
   # Release package to Test and then actual PyPI (only on push to main branch)
   # ***************************************************************************
   release:
-    needs: [build-macos, build-windows, build-linux]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v')
-
     name: release
+    needs: [build-macos, build-windows, build-linux]
     runs-on: ubuntu-latest
 
     steps:
