@@ -1,6 +1,9 @@
-name: cicd
+name: ci
 
-on: [push]
+on:
+  push:
+    tags-ignore:
+      - v*
 
 env:
   PYTHON_VERSION: "3.7"
