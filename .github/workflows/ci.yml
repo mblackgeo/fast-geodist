@@ -56,8 +56,6 @@ jobs:
   semantic-release:
     needs: ci
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    outputs:
-      semrel: ${{ steps.semrel.outputs.semrel }}
 
     runs-on: ubuntu-latest
     steps:
@@ -79,10 +77,6 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "action@github.com"
-          semantic-release publish -D commit_author='github-actions <action@github.com>' 2> out.txt
-          echo "::set-output name=semrel::$(cat out.txt)"
+          semantic-release publish -D commit_author='github-actions <action@github.com>'
         env:
           GH_TOKEN: ${{ secrets.GIT_TOKEN }}
-
-      - name: Show Semantic Release output
-        run: echo ${{ steps.semrel.outputs.semrel }}
