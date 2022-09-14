@@ -92,8 +92,7 @@ jobs:
   # Build wheels on Win/Mac/Linux (only on push to main branch)
   # ***************************************************************************
   build-linux:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(needs.semrel.outputs.semrel), 'No release will be made')
-    needs: semantic-release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v')
 
     runs-on: ubuntu-latest
     strategy:
@@ -125,8 +124,7 @@ jobs:
           path: dist
 
   build-windows:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(needs.semrel.outputs.semrel), 'No release will be made')
-    needs: semantic-release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v')
 
     runs-on: windows-latest
     strategy:
@@ -163,8 +161,7 @@ jobs:
           path: dist
 
   build-macos:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(needs.semrel.outputs.semrel), 'No release will be made')
-    needs: semantic-release
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v')
 
     runs-on: macos-latest
     steps:
@@ -208,8 +205,8 @@ jobs:
   # Release package to Test and then actual PyPI (only on push to main branch)
   # ***************************************************************************
   release:
-    needs: [semantic-release, build-macos, build-windows, build-linux]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && !contains(join(needs.semrel.outputs.semrel), 'No release will be made')
+    needs: [build-macos, build-windows, build-linux]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && startsWith(github.ref, 'refs/tags/v')
 
     name: release
     runs-on: ubuntu-latest
