@@ -1,8 +1,9 @@
 name: release
 
 on:
-  branches:
-    - "main"
+  push:
+    branches:
+      - main
 
 env:
   PYTHON_VERSION: "3.7"
