@@ -1,9 +1,6 @@
 name: ci
 
-on:
-  push:
-    tags-ignore:
-      - v*
+on: [push]
 
 env:
   PYTHON_VERSION: "3.7"
