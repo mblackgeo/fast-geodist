@@ -2,10 +2,7 @@ name: release
 
 on:
   push:
-    branches:
-      - "main"
-    tags:
-      - v*
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
 
 env:
   PYTHON_VERSION: "3.7"
@@ -17,6 +14,7 @@ jobs:
   # ***************************************************************************
   build-linux:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
         target: [x86_64, i686]
@@ -47,6 +45,7 @@ jobs:
 
   build-windows:
     runs-on: windows-latest
+    if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
         target: [x64, x86]
@@ -82,6 +81,7 @@ jobs:
 
   build-macos:
     runs-on: macos-latest
+    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -124,6 +124,7 @@ jobs:
   # ***************************************************************************
   release:
     name: release
+    if: github.ref == 'refs/heads/main'
     needs: [build-macos, build-windows, build-linux]
     runs-on: ubuntu-latest
 
