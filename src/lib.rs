@@ -61,7 +61,7 @@ fn haversine_array<'py>(py: Python<'py>, x: PyReadonlyArrayDyn<f64>) -> &'py PyA
 
 /// Python module
 #[pymodule]
-fn fast_haversine(_py: Python, m: &PyModule) -> PyResult<()> {
+fn _fast_haversine(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(haversine, m)?)?;
     m.add_function(wrap_pyfunction!(haversine_array, m)?)?;
     Ok(())
