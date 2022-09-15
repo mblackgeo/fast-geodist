@@ -1,5 +1,9 @@
 <!--next-version-placeholder-->
 
+## v0.2.0 (2022-09-15)
+### Feature
+* Rename internal rust package ([`16e61db`](https://github.com/mblackgeo/fast-haversine/commit/16e61db3c3609127470458ef82749d6a6b19344e))
+
 ## v0.1.0 (2022-09-15)
 ### Feature
 * First release ([`7a2067d`](https://github.com/mblackgeo/fast-haversine/commit/7a2067dd9688017609463f93df26d2acc388d69a))
