@@ -2,8 +2,8 @@ from typing import Tuple, Union
 
 import numpy as np
 
-from .fast_haversine import haversine as _haversine
-from .fast_haversine import haversine_array
+from ._fast_haversine import haversine as _haversine
+from ._fast_haversine import haversine_array
 
 __all__ = ["haversine"]
 __version__ = "0.1.0"

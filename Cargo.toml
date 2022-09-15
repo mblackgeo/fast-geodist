@@ -5,7 +5,7 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name = "fast_haversine"
+name = "_fast_haversine"
 crate-type = ["cdylib"]
 
 [dependencies]
@@ -16,3 +16,7 @@ numpy = "0.17.1"
 
 [dev-dependencies]
 approx = "0.5.1"
+
+[package.metadata.maturin]
+python-source = "python"
+name = "fast_haversine._fast_haversine"

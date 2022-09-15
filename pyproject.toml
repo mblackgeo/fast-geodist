@@ -32,10 +32,6 @@ dependencies = ["numpy~=1.0"]
 Homepage = "https://github.com/mblackgeo/fast-haversine"
 Repository = "https://github.com/mblackgeo/fast-haversine"
 
-[tool.maturin]
-python-source = "python"
-compatibility = "linux"
-
 [tool.black]
 line-length = 88
 include = '\.pyi?$'
