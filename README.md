@@ -6,7 +6,9 @@ This package was started as an experiement for learning how to implement functio
 
 ## Installation
 
-Coming soon (for now see Development below to install from source).
+```
+pip install fast-haversine
+```
 
 ## Quick start
 
