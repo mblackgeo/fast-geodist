@@ -24,7 +24,7 @@ result = haversine((1, 1, 0, 0))
 # or a numpy array of coordinates pairs
 # useful if lots of distances need to be calculated
 # will be computed in parallel
-result = haversine(np.array([(1,1,0,0), (2,2,0,0)]))
+result = haversine(np.array([(1, 1, 0, 0), (2, 2, 0, 0)]))
 ```
 
 ## Benchmarks
