@@ -1,5 +1,10 @@
 # fast-geodist
 
+[![PyPI](https://img.shields.io/pypi/v/fast-geodist?style=for-the-badge)](https://pypi.org/project/fast-geodist/)
+[![CI](https://img.shields.io/github/workflow/status/mblackgeo/fast-geodist/ci?label=CI&style=for-the-badge)](https://github.com/mblackgeo/fast-geodist/actions)
+[![Release](https://img.shields.io/github/workflow/status/mblackgeo/fast-geodist/release?label=RELEASE&style=for-the-badge)](https://github.com/mblackgeo/fast-geodist/actions)
+[![Code Style](https://img.shields.io/static/v1?label=code%20style&message=black&color=blue&style=for-the-badge)](https://github.com/psf/black)
+
 An implementation of the [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) for calculating [Great Circle distance](https://en.wikipedia.org/wiki/Great-circle_distance) using Rust and [PyO3](https://github.com/PyO3/PyO3).
 
 This package was started as an experiement for learning how to implement functions in Rust and wrap them for use in python. The Haversine Formula is implemented following [georust](https://github.com/georust/geo/blob/main/geo/src/algorithm/haversine_distance.rs), with an array-wise implementation written using [`ndarray::parallel`](https://docs.rs/ndarray/latest/ndarray/parallel/index.html). It is wrapped for python using [Maturin](https://github.com/PyO3/maturin) and integrates [`rust-numpy`](https://github.com/PyO3/rust-numpy) for array operations.
