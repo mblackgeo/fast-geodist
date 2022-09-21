@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 
-from fast_haversine import haversine
-from fast_haversine.slow import slow_haversine
+from fast_geodist import haversine
+from fast_geodist.slow import slow_haversine
 
 
 def test_unsupported_input():
