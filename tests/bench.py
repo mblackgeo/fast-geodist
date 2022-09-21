@@ -2,8 +2,8 @@ import random
 
 import numpy as np
 
-from fast_haversine import haversine_array
-from fast_haversine.slow import slow_haversine
+from fast_geodist import haversine_array
+from fast_geodist.slow import slow_haversine
 
 
 def rand_lat() -> float:

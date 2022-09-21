@@ -1,11 +1,11 @@
 [package]
-name = "fast-haversine"
+name = "fast-geodist"
 version = "0.2.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
-name = "_fast_haversine"
+name = "_fast_geodist"
 crate-type = ["cdylib"]
 
 [dependencies]
@@ -19,4 +19,4 @@ approx = "0.5.1"
 
 [package.metadata.maturin]
 python-source = "python"
-name = "fast_haversine._fast_haversine"
+name = "fast_geodist._fast_geodist"

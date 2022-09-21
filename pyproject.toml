@@ -3,7 +3,7 @@ requires = ["maturin>=0.13,<0.14"]
 build-backend = "maturin"
 
 [project]
-name = "fast-haversine"
+name = "fast-geodist"
 version = "0.2.0"
 requires-python = ">=3.7"
 description = "An implementation of Haversine distance calculations using Rust and PyO3"
@@ -29,8 +29,8 @@ classifiers = [
 dependencies = ["numpy~=1.0"]
 
 [project.urls]
-Homepage = "https://github.com/mblackgeo/fast-haversine"
-Repository = "https://github.com/mblackgeo/fast-haversine"
+Homepage = "https://github.com/mblackgeo/fast-geodist"
+Repository = "https://github.com/mblackgeo/fast-geodist"
 
 [tool.black]
 line-length = 88
@@ -53,10 +53,10 @@ exclude = '''
 profile = "black"
 multi_line_output = 3
 line_length = 88
-known_first_party = ["fast_haversine"]
+known_first_party = ["fast_geodist"]
 
 [tool.semantic_release]
-version_variable = ["python/fast_haversine/__init__.py:__version__"]
+version_variable = ["python/fast_geodist/__init__.py:__version__"]
 version_toml = ["pyproject.toml:project.version", "Cargo.toml:package.version"]
 build_command = ""
 major_on_zero = true
