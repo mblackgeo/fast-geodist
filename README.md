@@ -77,10 +77,7 @@ Tooling:
 
 ## Roadmap
 
-- [ ] Rename package due to clash with already released package on PyPI
 - [ ] Rust benchmarks
-- [x] Packaging using [Maturin](https://github.com/PyO3/maturin)
-- [x] CD pipeline with semantic release integration
 
 ## References
 
