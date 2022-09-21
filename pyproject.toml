@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "fast-geodist"
-version = "0.2.0"
+version = "0.3.0"
 requires-python = ">=3.7"
 description = "An implementation of Haversine distance calculations using Rust and PyO3"
 authors = [

@@ -1,5 +1,17 @@
 <!--next-version-placeholder-->
 
+## v0.3.0 (2022-09-21)
+### Feature
+* Rename package to avoid clash on pypi ([`3efe5bf`](https://github.com/mblackgeo/fast-geodist/commit/3efe5bff57296d5e14c3491583ae863ddba68aac))
+
+### Documentation
+* Remove completed items from roadmap ([`d4aad2e`](https://github.com/mblackgeo/fast-geodist/commit/d4aad2e14aa0cd717f006d2b5771b1330fc9a477))
+* Add badges ([`6dd65c4`](https://github.com/mblackgeo/fast-geodist/commit/6dd65c48d644849752973d182c6af2a17c7ee3f9))
+* Rename package ([`dc00675`](https://github.com/mblackgeo/fast-geodist/commit/dc006755489e7a4fd7d3843a081c05d57e35dfc1))
+* Add todo for package rename ([`5f5f490`](https://github.com/mblackgeo/fast-geodist/commit/5f5f490ed58383f3265eab933e58569899b49b85))
+* Fix spacing in example ([`03d6a8c`](https://github.com/mblackgeo/fast-geodist/commit/03d6a8c0221c8f3e962359a4feb1468ea4ece2dd))
+* Add install command ([`dd45b54`](https://github.com/mblackgeo/fast-geodist/commit/dd45b54f055342157f41ea4d71b3a994cfad9184))
+
 ## v0.2.0 (2022-09-15)
 ### Feature
 * Rename internal rust package ([`16e61db`](https://github.com/mblackgeo/fast-geodist/commit/16e61db3c3609127470458ef82749d6a6b19344e))
