@@ -7,7 +7,7 @@ on:
 
 env:
   PYTHON_VERSION: "3.7"
-  PACKAGE_NAME: "fast_haversine"
+  PACKAGE_NAME: "fast_geodist"
 
 jobs:
   # **************************************************************************
@@ -150,10 +150,10 @@ jobs:
           pip install \
           --index-url https://test.pypi.org/simple/ \
           --extra-index-url https://pypi.org/simple \
-          fast-haversine
+          fast-geodist
 
       - name: Verify package after install from Test PyPI
-        run: python -c "import fast_haversine; print(fast_haversine.__version__)"
+        run: python -c "import fast_geodist; print(fast_geodist.__version__)"
 
       - name: Publish to PyPI
         uses: messense/maturin-action@v1
