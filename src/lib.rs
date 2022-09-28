@@ -1,6 +1,6 @@
 use ndarray::parallel::prelude::{IndexedParallelIterator, IntoParallelIterator, ParallelIterator};
 use ndarray::{Array1, ArrayView2, Axis};
-use numpy::{IntoPyArray, PyArray1, PyReadonlyArrayDyn};
+use numpy::{IntoPyArray, PyArray1, PyReadonlyArray2};
 use pyo3::prelude::{pyfunction, pymodule, wrap_pyfunction, PyModule, PyResult, Python};
 
 /// Mean radius of Earth in meters
@@ -47,16 +47,9 @@ fn haversine(lat1: f64, lng1: f64, lat2: f64, lng2: f64) -> PyResult<f64> {
 }
 
 #[pyfunction]
-fn haversine_array<'py>(py: Python<'py>, x: PyReadonlyArrayDyn<f64>) -> &'py PyArray1<f64> {
-    let array = x.as_array();
-
-    // reshape to ensure 2D
-    let shape = (array.len_of(Axis(0)), array.len_of(Axis(1)));
-    let array2d = array.into_shape(shape).unwrap();
-    // TODO raise an exception here if dim 2 is not exactly 4
-
-    let result_array = haversine_distance_array(&array2d);
-    result_array.into_pyarray(py)
+fn haversine_array<'py>(py: Python<'py>, x: PyReadonlyArray2<f64>) -> &'py PyArray1<f64> {
+    let res = haversine_distance_array(&x.as_array());
+    res.into_pyarray(py)
 }
 
 /// Python module
