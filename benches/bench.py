@@ -17,12 +17,11 @@ def rand_lng() -> float:
 def create_data() -> np.ndarray:
     random.seed(0)
     return np.array(
-        [(rand_lat(), rand_lng(), rand_lat(), rand_lng()) for _ in range(250_000)],
+        [(rand_lat(), rand_lng(), rand_lat(), rand_lng()) for _ in range(1_000_000)],
     )
 
 
-def bench_helper(fast: bool = False):
-    data = create_data()
+def bench_helper(data: np.ndarray, fast: bool = False):
     if fast:
         haversine_array(data)
     else:
@@ -31,8 +30,10 @@ def bench_helper(fast: bool = False):
 
 
 def test_benchmark_fast(benchmark):
-    benchmark(bench_helper, fast=True)
+    data = create_data()
+    benchmark(bench_helper, data=data, fast=True)
 
 
 def test_benchmark_slow(benchmark):
-    benchmark(bench_helper, fast=False)
+    data = create_data()
+    benchmark(bench_helper, data=data, fast=False)
