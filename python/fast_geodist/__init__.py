@@ -9,7 +9,9 @@ __all__ = ["haversine"]
 __version__ = "0.3.0"
 
 
-def haversine(input: Union[np.ndarray, Tuple[float, ...]]) -> Union[np.ndarray, float]:
+def haversine(
+    input: Union[np.ndarray, Tuple[float, float, float, float]]
+) -> Union[np.ndarray, float]:
     """Calculate the Havesine distance between pairs of latitudes and longitudes
 
     Parameters
