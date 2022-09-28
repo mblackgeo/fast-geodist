@@ -6,7 +6,7 @@ from ._fast_geodist import haversine as _haversine
 from ._fast_geodist import haversine_array
 
 __all__ = ["haversine"]
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 
 def haversine(

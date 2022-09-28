@@ -1,5 +1,9 @@
 <!--next-version-placeholder-->
 
+## v0.4.0 (2022-09-28)
+### Feature
+* Performance improvements and rust benchmarks ([#6](https://github.com/mblackgeo/fast-geodist/issues/6)) ([`f482211`](https://github.com/mblackgeo/fast-geodist/commit/f4822115eaacf016c90ef6401da2fe975110d3d0))
+
 ## v0.3.0 (2022-09-21)
 ### Feature
 * Rename package to avoid clash on pypi ([`3efe5bf`](https://github.com/mblackgeo/fast-geodist/commit/3efe5bff57296d5e14c3491583ae863ddba68aac))
