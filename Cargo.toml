@@ -15,7 +15,13 @@ numpy = "0.17.1"
 
 [dev-dependencies]
 approx = "0.5.1"
+criterion = { version = "0.4.0", features = ["html_reports"] }
+ndarray-rand = "0.14.0"
 
 [package.metadata.maturin]
 python-source = "python"
 name = "fast_geodist._fast_geodist"
+
+[[bench]]
+name = "array"
+harness = false
