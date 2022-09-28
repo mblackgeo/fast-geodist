@@ -12,8 +12,7 @@ def test_unsupported_input():
 
 def test_with_tuple():
     res = haversine((42.3521, -72.1235, 70.612, 72.1260))
-    expect = 7130580.307935911
-    assert res == pytest.approx(expect)
+    assert pytest.approx(res) == 7130580.307935911
 
 
 def test_with_tuple_with_wrong_shape():
@@ -41,5 +40,4 @@ def test_with_nparray():
 
 def test_slow_haversine():
     res = slow_haversine(42.3521, -72.1235, 70.612, 72.1260)
-    expect = 7130580.307935911
-    assert res == pytest.approx(expect)
+    assert res == pytest.approx(res) == 7130580.307935911

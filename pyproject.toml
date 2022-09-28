@@ -22,7 +22,6 @@ classifiers = [
   "Operating System :: POSIX :: Linux",
   "Operating System :: Microsoft :: Windows",
   "Operating System :: MacOS",
-  "Environment :: MacOS X",
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed",
 ]

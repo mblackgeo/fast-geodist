@@ -7,7 +7,7 @@
 
 An implementation of the [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) for calculating [Great Circle distance](https://en.wikipedia.org/wiki/Great-circle_distance) using Rust and [PyO3](https://github.com/PyO3/PyO3).
 
-This package was started as an experiement for learning how to implement functions in Rust and wrap them for use in python. The Haversine Formula is implemented following [georust](https://github.com/georust/geo/blob/main/geo/src/algorithm/haversine_distance.rs), with an array-wise implementation written using [`ndarray::parallel`](https://docs.rs/ndarray/latest/ndarray/parallel/index.html). It is wrapped for python using [Maturin](https://github.com/PyO3/maturin) and integrates [`rust-numpy`](https://github.com/PyO3/rust-numpy) for array operations.
+This package was started as an experiment for learning how to implement functions in Rust and wrap them for use in python. The Haversine Formula is implemented following [georust](https://github.com/georust/geo/blob/main/geo/src/algorithm/haversine_distance.rs), with an array-wise implementation written using [`ndarray::parallel`](https://docs.rs/ndarray/latest/ndarray/parallel/index.html). It is wrapped for python using [Maturin](https://github.com/PyO3/maturin) and integrates [`rust-numpy`](https://github.com/PyO3/rust-numpy) for array operations.
 
 ## Installation
 
@@ -34,15 +34,15 @@ result = haversine(np.array([(1, 1, 0, 0), (2, 2, 0, 0)]))
 
 ## Benchmarks
 
-The results of benchmarking show the rust implementation is **2.5x to 2.7x faster** than the python implementation. This benchmark computes distances on an array containing 250,000 pairs on coordinates (see [`bench.py`](/tests/bench.py)):
+The results of benchmarking show the rust implementation is **14x faster** than the python implementation. This benchmark computes distances on an array containing 1,000,000 pairs of coordinates (see [`bench.py`](/tests/bench.py)):
 
 ```
---------------------------------------------------- benchmark: 2 tests --------------------------------------------------
-Name (time in ms)            Min                 Max                Mean             StdDev              Median
--------------------------------------------------------------------------------------------------------------------------
-test_benchmark_fast     260.0692 (1.0)      265.6916 (1.0)      262.6179 (1.0)       2.0324 (1.0)      262.5162 (1.0)
-test_benchmark_slow     655.8816 (2.52)     845.2172 (3.18)     709.3914 (2.70)     80.1352 (39.43)    667.0456 (2.54)
--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------- benchmark: 2 tests ---------------------------------------------
+Name (time in ms)              Min                   Max                  Mean                Median
+--------------------------------------------------------------------------------------------------------------
+test_benchmark_fast       164.0635 (1.0)        171.7663 (1.0)        168.0218 (1.0)        168.4129 (1.0)
+test_benchmark_slow     2,335.4281 (14.23)    2,439.7850 (14.20)    2,395.6077 (14.26)    2,406.6356 (14.29)
+--------------------------------------------------------------------------------------------------------------
 ```
 Computed on an Intel i7-1165G7.
 
@@ -74,10 +74,6 @@ Tooling:
 * [pre-commit](https://pre-commit.com/) is used to run these checks locally before files are pushed to git
 * The [Github Actions pipeline](.github/workflows/ci.yml) runs these checks and tests
 * [Semantic-release](https://python-semantic-release.readthedocs.io/en/latest/) is used with [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) for automated releasing to PyPI
-
-## Roadmap
-
-- [ ] Rust benchmarks
 
 ## References
 

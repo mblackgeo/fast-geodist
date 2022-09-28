@@ -6,17 +6,22 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
 name = "_fast_geodist"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 pyo3 = { version = "0.17.1", features = ["extension-module", "abi3-py37"] }
-itertools = "0.10.3"
 ndarray = { version = "0.15.3", features = ["rayon"] }
 numpy = "0.17.1"
 
 [dev-dependencies]
 approx = "0.5.1"
+criterion = { version = "0.4.0", features = ["html_reports"] }
+ndarray-rand = "0.14.0"
 
 [package.metadata.maturin]
 python-source = "python"
 name = "fast_geodist._fast_geodist"
+
+[[bench]]
+name = "array"
+harness = false

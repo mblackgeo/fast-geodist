@@ -30,6 +30,10 @@ test: build  ## Run the test suite using cargo and pytest
 	cargo test
 	pytest tests
 
-.PHONY: bench
-bench: build ## Run the Rust and Python benchmarks
-	pytest tests/bench.py --benchmark-columns="min, max, mean, median"
+.PHONY: bench-py
+bench-py: build ## Run the Python benchmarks
+	pytest benches/bench.py --benchmark-columns="min, max, mean, median"
+
+.PHONY: bench-rs
+bench-rs: ## Run the Rust benchmarks
+	cargo bench
