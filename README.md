@@ -34,14 +34,14 @@ result = haversine(np.array([(1, 1, 0, 0), (2, 2, 0, 0)]))
 
 ## Benchmarks
 
-The results of benchmarking show the rust implementation is **12x faster** than the python implementation. This benchmark computes distances on an array containing 1,000,000 pairs on coordinates (see [`bench.py`](/tests/bench.py)):
+The results of benchmarking show the rust implementation is **14x faster** than the python implementation. This benchmark computes distances on an array containing 1,000,000 pairs on coordinates (see [`bench.py`](/tests/bench.py)):
 
 ```
 --------------------------------------------- benchmark: 2 tests ---------------------------------------------
 Name (time in ms)              Min                   Max                  Mean                Median
 --------------------------------------------------------------------------------------------------------------
-test_benchmark_fast       114.3697 (1.0)        137.6122 (1.0)        122.2268 (1.0)        120.0515 (1.0)
-test_benchmark_slow     1,464.3898 (12.80)    1,500.1042 (10.90)    1,477.3460 (12.09)    1,468.1604 (12.23)
+test_benchmark_fast       164.0635 (1.0)        171.7663 (1.0)        168.0218 (1.0)        168.4129 (1.0)
+test_benchmark_slow     2,335.4281 (14.23)    2,439.7850 (14.20)    2,395.6077 (14.26)    2,406.6356 (14.29)
 --------------------------------------------------------------------------------------------------------------
 ```
 Computed on an Intel i7-1165G7.
