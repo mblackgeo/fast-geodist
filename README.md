@@ -34,15 +34,15 @@ result = haversine(np.array([(1, 1, 0, 0), (2, 2, 0, 0)]))
 
 ## Benchmarks
 
-The results of benchmarking show the rust implementation is **2.5x to 2.7x faster** than the python implementation. This benchmark computes distances on an array containing 250,000 pairs on coordinates (see [`bench.py`](/tests/bench.py)):
+The results of benchmarking show the rust implementation is **12x faster** than the python implementation. This benchmark computes distances on an array containing 1,000,000 pairs on coordinates (see [`bench.py`](/tests/bench.py)):
 
 ```
---------------------------------------------------- benchmark: 2 tests --------------------------------------------------
-Name (time in ms)            Min                 Max                Mean             StdDev              Median
--------------------------------------------------------------------------------------------------------------------------
-test_benchmark_fast     260.0692 (1.0)      265.6916 (1.0)      262.6179 (1.0)       2.0324 (1.0)      262.5162 (1.0)
-test_benchmark_slow     655.8816 (2.52)     845.2172 (3.18)     709.3914 (2.70)     80.1352 (39.43)    667.0456 (2.54)
--------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------- benchmark: 2 tests ---------------------------------------------
+Name (time in ms)              Min                   Max                  Mean                Median
+--------------------------------------------------------------------------------------------------------------
+test_benchmark_fast       114.3697 (1.0)        137.6122 (1.0)        122.2268 (1.0)        120.0515 (1.0)
+test_benchmark_slow     1,464.3898 (12.80)    1,500.1042 (10.90)    1,477.3460 (12.09)    1,468.1604 (12.23)
+--------------------------------------------------------------------------------------------------------------
 ```
 Computed on an Intel i7-1165G7.
 
@@ -74,10 +74,6 @@ Tooling:
 * [pre-commit](https://pre-commit.com/) is used to run these checks locally before files are pushed to git
 * The [Github Actions pipeline](.github/workflows/ci.yml) runs these checks and tests
 * [Semantic-release](https://python-semantic-release.readthedocs.io/en/latest/) is used with [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) for automated releasing to PyPI
-
-## Roadmap
-
-- [ ] Rust benchmarks
 
 ## References
 
