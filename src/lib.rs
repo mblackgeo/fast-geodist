@@ -31,7 +31,7 @@ pub fn haversine_distance(lat1: f64, lng1: f64, lat2: f64, lng2: f64) -> f64 {
 }
 
 pub fn haversine_distance_array(x: &ArrayView2<f64>) -> Array1<f64> {
-    let mut distances = Vec::new();
+    let mut distances = Vec::with_capacity(x.shape()[0]);
     x.axis_iter(Axis(0))
         .into_par_iter()
         .map(|row| haversine_distance(row[0], row[1], row[2], row[3]))
