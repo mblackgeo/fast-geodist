@@ -23,13 +23,19 @@ The package provides two main entry points:
 import numpy as np
 from fast_geodist import haversine
 
-# input either a tuple of (lat/lon, lat/lon)
-result = haversine((1, 1, 0, 0))
+# Calculate a single distance
+# input either a pair of coordinate tuples: (lat1/lon1), (lat2/lon2)
+london = (51.51, -0.12)
+paris = (48.85, 2.35)
+new_york = (40.7, -74.2)
 
-# or a numpy array of coordinates pairs
-# useful if lots of distances need to be calculated
-# will be computed in parallel
-result = haversine(np.array([(1, 1, 0, 0), (2, 2, 0, 0)]))
+result = haversine(london, paris)
+
+# Calculate multiple distances with lists
+result = haversine([(london, paris), (new_york, london)])
+
+# or a numpy array with shape [4, n]
+result = haversine(np.array([(*london, *paris), (*new_york, *london)]))
 ```
 
 ## Benchmarks
