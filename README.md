@@ -1,8 +1,8 @@
 # fast-geodist
 
 [![PyPI](https://img.shields.io/pypi/v/fast-geodist?style=for-the-badge)](https://pypi.org/project/fast-geodist/)
-[![CI](https://img.shields.io/github/workflow/status/mblackgeo/fast-geodist/ci?label=CI&style=for-the-badge)](https://github.com/mblackgeo/fast-geodist/actions)
-[![Release](https://img.shields.io/github/workflow/status/mblackgeo/fast-geodist/release?label=RELEASE&style=for-the-badge)](https://github.com/mblackgeo/fast-geodist/actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/mblackgeo/fast-geodist/ci.yml?label=CI&style=for-the-badge)](https://github.com/mblackgeo/fast-geodist/actions)
+[![Release](https://img.shields.io/github/actions/workflow/status/mblackgeo/fast-geodist/release.yml?label=RELEASE&style=for-the-badge)](https://github.com/mblackgeo/fast-geodist/actions)
 [![Code Style](https://img.shields.io/static/v1?label=code%20style&message=black&color=blue&style=for-the-badge)](https://github.com/psf/black)
 
 An implementation of the [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) for calculating [Great Circle distance](https://en.wikipedia.org/wiki/Great-circle_distance) using Rust and [PyO3](https://github.com/PyO3/PyO3).
